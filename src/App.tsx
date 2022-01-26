@@ -12,6 +12,7 @@ const TILE_VARIANT1_COLOR = "white";
 const SNAKE_BODY_COLOR = "lime";
 const SNAKE_HEAD_COLOR = "green";
 const FRUIT_COLOR = "red";
+const FPS = 2;
 
 const INITIAL_SNAKE: Point[] = [{ x: 2, y: 2 }];
 
@@ -114,13 +115,17 @@ function App() {
       return;
     }
 
-    const nextSnake = calcSnake(snake, TEST_FRUIT, delta);
-    drawBoard(context);
-    drawSnake(context, nextSnake);
-    drawFruit(context, TEST_FRUIT);
+    const render = () => {
+      const nextSnake = calcSnake(snake, TEST_FRUIT, delta);
+      drawBoard(context);
+      drawSnake(context, nextSnake);
+      drawFruit(context, TEST_FRUIT);
+      setSnake(nextSnake);
+    }
 
-    setSnake(nextSnake);
-  }, [delta]);
+    const renderInterval = setInterval(render, 1000 / FPS);
+    return () => clearInterval(renderInterval);
+  }, [delta, snake]);
 
   return (
     <div>
