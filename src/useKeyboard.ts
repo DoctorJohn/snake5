@@ -22,8 +22,9 @@ function useKeyboard() {
     return () => window.removeEventListener("keydown", handleKeyboardEvent);
   }, [setLastKey]);
 
-  const deltaX = lastKey == "ArrowLeft" ? -1 : lastKey == "ArrowRight" ? 1 : 0;
-  const deltaY = lastKey == "ArrowUp" ? -1 : lastKey == "ArrowDown" ? 1 : 0;
+  const deltaX =
+    lastKey === "ArrowLeft" ? -1 : lastKey === "ArrowRight" ? 1 : 0;
+  const deltaY = lastKey === "ArrowUp" ? -1 : lastKey === "ArrowDown" ? 1 : 0;
 
   const delta: Point = React.useMemo(() => {
     return { x: deltaX, y: deltaY };
