@@ -1,6 +1,6 @@
 import React from "react";
-import "./App.css";
 import useKeyboard from "./useKeyboard";
+import "./App.css";
 
 type Point = { x: number; y: number };
 type Size = { w: number; h: number };
@@ -14,9 +14,9 @@ const SNAKE_HEAD_COLOR = "green";
 const FRUIT_COLOR = "red";
 const FPS = 2;
 
-const INITIAL_SNAKE: Point[] = [{ x: 2, y: 2 }];
-
-const TEST_FRUIT: Point = { x: 4, y: 4 };
+function mod(n: number, m: number) {
+  return ((n % m) + m) % m;
+}
 
 function drawBoard(context: CanvasRenderingContext2D) {
   for (var x = 0; x <= GRID_SIZE.w; x++) {
@@ -72,34 +72,50 @@ function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
   context.fill();
 }
 
-function calcSnake(currentSnake: Point[], fruit: Point, delta: Point) {
-  // TODO: check fruit
-  // TODO: return empty array on death
+function isEating(snake: Point[], fruit: Point) {
+  return snake.some((e) => e.x === fruit.x && e.y === fruit.y);
+}
 
-  // if wall
-  // if self
-  // if fruit
-  // else:
+function isDead(snake: Point[]) {
+  return snake.length === 0;
+}
 
-  const snakeCopy: Point[] = [...currentSnake];
+function calcNextSnake(oldSnake: Point[], fruit: Point, delta: Point) {
+  const currentHead: Point = oldSnake[0];
+  const headless: Point[] = oldSnake.slice(1);
 
-  if (snakeCopy.length > 1) {
-    snakeCopy.pop();
+  if (isEating(headless, currentHead)) {
+    console.log("DEATH");
+    return [];
   }
 
-  // TODO: refactor
-  const currentHead: Point = snakeCopy[0];
   const newHead: Point = {
-    x: currentHead.x + delta.x,
-    y: currentHead.y + delta.y,
+    x: mod(currentHead.x + delta.x, GRID_SIZE.w),
+    y: mod(currentHead.y + delta.y, GRID_SIZE.h),
   };
 
-  return [newHead, ...snakeCopy];
+  const newSnake = [newHead, ...oldSnake];
+
+  if (newSnake.length > 1 && !isEating(newSnake, fruit)) {
+    // Remove old tail
+    newSnake.pop();
+  }
+
+  return newSnake;
+}
+
+function randomPosition() {
+  return {
+    x: Math.round(Math.random() * (GRID_SIZE.w - 1)),
+    y: Math.round(Math.random() * (GRID_SIZE.h - 1)),
+  } as Point;
 }
 
 function App() {
-  const [snake, setSnake] = React.useState(INITIAL_SNAKE);
+  const [snake, setSnake] = React.useState([randomPosition()]);
+  const [fruit, setFruit] = React.useState(randomPosition());
   const { delta } = useKeyboard();
+  const gameOver = isDead(snake);
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -115,17 +131,32 @@ function App() {
       return;
     }
 
-    const render = () => {
-      const nextSnake = calcSnake(snake, TEST_FRUIT, delta);
-      drawBoard(context);
-      drawSnake(context, nextSnake);
-      drawFruit(context, TEST_FRUIT);
-      setSnake(nextSnake);
+    if (gameOver) {
+      console.log("GAME OVER");
+      return;
     }
+
+    const render = () => {
+      const nextSnake = calcNextSnake(snake, fruit, delta);
+      setSnake(nextSnake);
+
+      if (isDead(nextSnake)) {
+        return;
+      }
+
+      drawBoard(context);
+      drawFruit(context, fruit);
+      drawSnake(context, nextSnake);
+
+      if (isEating(nextSnake, fruit)) {
+        const nextFruit = randomPosition();
+        setFruit(nextFruit);
+      }
+    };
 
     const renderInterval = setInterval(render, 1000 / FPS);
     return () => clearInterval(renderInterval);
-  }, [delta, snake]);
+  }, [delta, snake, fruit, gameOver]);
 
   return (
     <div>
