@@ -20,62 +20,62 @@ const TEST_SNAKE: Point[] = [
 
 const TEST_FRUIT: Point = { x: 4, y: 4 };
 
-function App() {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-
-  function drawBoard(context: CanvasRenderingContext2D) {
-    for (var x = 0; x <= GRID_SIZE.w; x++) {
-      for (var y = 0; y <= GRID_SIZE.h; y++) {
-        context.beginPath();
-        context.rect(x * TILE_SCALE, y * TILE_SCALE, TILE_SCALE, TILE_SCALE);
-
-        const fillVariant = (x + y) % 2;
-        context.fillStyle = fillVariant
-          ? TILE_VARIANT0_COLOR
-          : TILE_VARIANT1_COLOR;
-        context.fill();
-      }
-    }
-  }
-
-  function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
-    // Draw snake
-    for (const snakePart of snake) {
+function drawBoard(context: CanvasRenderingContext2D) {
+  for (var x = 0; x <= GRID_SIZE.w; x++) {
+    for (var y = 0; y <= GRID_SIZE.h; y++) {
       context.beginPath();
-      context.rect(
-        snakePart.x * TILE_SCALE,
-        snakePart.y * TILE_SCALE,
-        TILE_SCALE,
-        TILE_SCALE
-      );
-      context.fillStyle = SNAKE_BODY_COLOR;
+      context.rect(x * TILE_SCALE, y * TILE_SCALE, TILE_SCALE, TILE_SCALE);
+
+      const fillVariant = (x + y) % 2;
+      context.fillStyle = fillVariant
+        ? TILE_VARIANT0_COLOR
+        : TILE_VARIANT1_COLOR;
       context.fill();
     }
+  }
+}
 
-    // Draw head again
-    const snakeHead = snake[0];
+function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
+  // Draw snake
+  for (const snakePart of snake) {
     context.beginPath();
     context.rect(
-      snakeHead.x * TILE_SCALE,
-      snakeHead.y * TILE_SCALE,
+      snakePart.x * TILE_SCALE,
+      snakePart.y * TILE_SCALE,
       TILE_SCALE,
       TILE_SCALE
     );
-    context.fillStyle = SNAKE_HEAD_COLOR;
+    context.fillStyle = SNAKE_BODY_COLOR;
     context.fill();
   }
 
-  function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
-    context.beginPath();
-    context.rect(
-      fruit.x * TILE_SCALE,
-      fruit.y * TILE_SCALE,
-      TILE_SCALE,
-      TILE_SCALE
-    );
-    context.fillStyle = FRUIT_COLOR;
-    context.fill();
-  }
+  // Draw head again
+  const snakeHead = snake[0];
+  context.beginPath();
+  context.rect(
+    snakeHead.x * TILE_SCALE,
+    snakeHead.y * TILE_SCALE,
+    TILE_SCALE,
+    TILE_SCALE
+  );
+  context.fillStyle = SNAKE_HEAD_COLOR;
+  context.fill();
+}
+
+function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
+  context.beginPath();
+  context.rect(
+    fruit.x * TILE_SCALE,
+    fruit.y * TILE_SCALE,
+    TILE_SCALE,
+    TILE_SCALE
+  );
+  context.fillStyle = FRUIT_COLOR;
+  context.fill();
+}
+
+function App() {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
     if (!canvasRef.current) {
