@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import useKeyboard from "./useKeyboard";
 
 type Point = { x: number; y: number };
 type Size = { w: number; h: number };
@@ -12,11 +13,7 @@ const SNAKE_BODY_COLOR = "lime";
 const SNAKE_HEAD_COLOR = "green";
 const FRUIT_COLOR = "red";
 
-const TEST_SNAKE: Point[] = [
-  { x: 2, y: 2 },
-  { x: 1, y: 2 },
-  { x: 1, y: 1 },
-];
+const INITIAL_SNAKE: Point[] = [{ x: 2, y: 2 }];
 
 const TEST_FRUIT: Point = { x: 4, y: 4 };
 
@@ -74,7 +71,35 @@ function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
   context.fill();
 }
 
+function calcSnake(currentSnake: Point[], fruit: Point, delta: Point) {
+  // TODO: check fruit
+  // TODO: return empty array on death
+
+  // if wall
+  // if self
+  // if fruit
+  // else:
+
+  const snakeCopy: Point[] = [...currentSnake];
+
+  if (snakeCopy.length > 1) {
+    snakeCopy.pop();
+  }
+
+  // TODO: refactor
+  const currentHead: Point = snakeCopy[0];
+  const newHead: Point = {
+    x: currentHead.x + delta.x,
+    y: currentHead.y + delta.y,
+  };
+
+  return [newHead, ...snakeCopy];
+}
+
 function App() {
+  const [snake, setSnake] = React.useState(INITIAL_SNAKE);
+  const { delta } = useKeyboard();
+
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
@@ -89,10 +114,13 @@ function App() {
       return;
     }
 
+    const nextSnake = calcSnake(snake, TEST_FRUIT, delta);
     drawBoard(context);
-    drawSnake(context, TEST_SNAKE);
+    drawSnake(context, nextSnake);
     drawFruit(context, TEST_FRUIT);
-  }, []);
+
+    setSnake(nextSnake);
+  }, [delta]);
 
   return (
     <div>
