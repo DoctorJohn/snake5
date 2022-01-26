@@ -4,7 +4,7 @@ type Point = { x: number; y: number };
 
 const VALID_KEYS = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"];
 
-function useKeyboard() {
+function useControls() {
   const [lastKey, setLastKey] = React.useState<string>();
 
   React.useEffect(() => {
@@ -30,7 +30,7 @@ function useKeyboard() {
     return { x: deltaX, y: deltaY };
   }, [deltaX, deltaY]);
 
-  return { lastKey, delta } as const;
+  return { delta } as const;
 }
 
-export default useKeyboard;
+export default useControls;

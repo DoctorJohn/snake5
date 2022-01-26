@@ -1,5 +1,5 @@
 import React from "react";
-import useKeyboard from "./useKeyboard";
+import useControls from "./useControls";
 import "./App.css";
 
 type Point = { x: number; y: number };
@@ -114,7 +114,7 @@ function randomPosition() {
 function App() {
   const [snake, setSnake] = React.useState([randomPosition()]);
   const [fruit, setFruit] = React.useState(randomPosition());
-  const { delta } = useKeyboard();
+  const { delta } = useControls();
   const gameOver = isDead(snake);
 
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
