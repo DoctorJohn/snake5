@@ -9,7 +9,6 @@ const GRID_SIZE: Size = { w: 10, h: 10 }; // units
 const TILE_SCALE: number = 50; // pixels
 const TILE_VARIANT0_COLOR = "wheat";
 const TILE_VARIANT1_COLOR = "white";
-const SNAKE_BODY_COLOR = "lime";
 const SNAKE_HEAD_COLOR = "green";
 const FRUIT_COLOR = "red";
 const FPS = 2;
@@ -35,7 +34,9 @@ function drawBoard(context: CanvasRenderingContext2D) {
 
 function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
   // Draw snake
-  for (const snakePart of snake) {
+  for (let index = 0; index < snake.length; index++) {
+    const snakePart = snake[index];
+    const hue = mod(index * 10 + 100, 360);
     context.beginPath();
     context.rect(
       snakePart.x * TILE_SCALE,
@@ -43,7 +44,7 @@ function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
       TILE_SCALE,
       TILE_SCALE
     );
-    context.fillStyle = SNAKE_BODY_COLOR;
+    context.fillStyle = `hsl(${hue}, 100%, 30%)`;
     context.fill();
   }
 
