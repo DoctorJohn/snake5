@@ -5,7 +5,7 @@ type Point = { x: number; y: number };
 type Size = { w: number; h: number };
 
 const GRID_SIZE: Size = { w: 10, h: 10 }; // units
-const TILE_SIZE: Size = { w: 50, h: 50 }; // pixels
+const TILE_SCALE: number = 50; // pixels
 const TILE_VARIANT0_COLOR = "wheat";
 const TILE_VARIANT1_COLOR = "white";
 const SNAKE_BODY_COLOR = "lime";
@@ -27,12 +27,7 @@ function App() {
     for (var x = 0; x <= GRID_SIZE.w; x++) {
       for (var y = 0; y <= GRID_SIZE.h; y++) {
         context.beginPath();
-        context.rect(
-          x * TILE_SIZE.w,
-          y * TILE_SIZE.h,
-          TILE_SIZE.w,
-          TILE_SIZE.h
-        );
+        context.rect(x * TILE_SCALE, y * TILE_SCALE, TILE_SCALE, TILE_SCALE);
 
         const fillVariant = (x + y) % 2;
         context.fillStyle = fillVariant
@@ -48,10 +43,10 @@ function App() {
     for (const snakePart of snake) {
       context.beginPath();
       context.rect(
-        snakePart.x * TILE_SIZE.w,
-        snakePart.y * TILE_SIZE.h,
-        TILE_SIZE.w,
-        TILE_SIZE.h
+        snakePart.x * TILE_SCALE,
+        snakePart.y * TILE_SCALE,
+        TILE_SCALE,
+        TILE_SCALE
       );
       context.fillStyle = SNAKE_BODY_COLOR;
       context.fill();
@@ -61,10 +56,10 @@ function App() {
     const snakeHead = snake[0];
     context.beginPath();
     context.rect(
-      snakeHead.x * TILE_SIZE.w,
-      snakeHead.y * TILE_SIZE.h,
-      TILE_SIZE.w,
-      TILE_SIZE.h
+      snakeHead.x * TILE_SCALE,
+      snakeHead.y * TILE_SCALE,
+      TILE_SCALE,
+      TILE_SCALE
     );
     context.fillStyle = SNAKE_HEAD_COLOR;
     context.fill();
@@ -73,10 +68,10 @@ function App() {
   function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
     context.beginPath();
     context.rect(
-      fruit.x * TILE_SIZE.w,
-      fruit.y * TILE_SIZE.h,
-      TILE_SIZE.w,
-      TILE_SIZE.h
+      fruit.x * TILE_SCALE,
+      fruit.y * TILE_SCALE,
+      TILE_SCALE,
+      TILE_SCALE
     );
     context.fillStyle = FRUIT_COLOR;
     context.fill();
@@ -103,8 +98,8 @@ function App() {
     <div>
       <canvas
         className="canvas"
-        width={GRID_SIZE.w * TILE_SIZE.w}
-        height={GRID_SIZE.h * TILE_SIZE.h}
+        width={GRID_SIZE.w * TILE_SCALE}
+        height={GRID_SIZE.h * TILE_SCALE}
         ref={canvasRef}
       />
     </div>
