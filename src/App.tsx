@@ -63,11 +63,12 @@ function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
 
 function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
   context.beginPath();
-  context.rect(
-    fruit.x * TILE_SCALE,
-    fruit.y * TILE_SCALE,
-    TILE_SCALE,
-    TILE_SCALE
+  context.arc(
+    fruit.x * TILE_SCALE + TILE_SCALE / 2,
+    fruit.y * TILE_SCALE + TILE_SCALE / 2,
+    TILE_SCALE / 2,
+    0,
+    2 * Math.PI
   );
   context.fillStyle = FRUIT_COLOR;
   context.fill();
