@@ -185,7 +185,7 @@ function App() {
   }, [delta, snake, fruit, gameOver]);
 
   return (
-    <div className="app">
+    <div className="flex-fill d-flex justify-content-center align-items-center">
       <canvas
         className="canvas"
         width={GRID_SIZE.w * TILE_SCALE}
