@@ -88,7 +88,7 @@ function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
   context.arc(
     fruit.x * TILE_SCALE + TILE_SCALE / 2,
     fruit.y * TILE_SCALE + TILE_SCALE / 2,
-    TILE_SCALE / 2,
+    (TILE_SCALE / 2) * 0.85,
     0,
     2 * Math.PI
   );
