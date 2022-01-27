@@ -138,18 +138,19 @@ function randomPosition() {
 function App() {
   const [snake, setSnake] = React.useState([randomPosition()]);
   const [fruit, setFruit] = React.useState(randomPosition());
+  const [alive, setAlive] = React.useState(true);
   const { delta } = useControls();
-  const gameOver = isDead(snake);
 
+  const score = snake.length - 1;
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
-    if (gameOver) {
+    if (!alive) {
       console.log("GAME OVER");
       navigator.vibrate(500);
       new Audio("/audio/ohoh.mp3").play();
     }
-  }, [gameOver]);
+  }, [alive]);
 
   React.useEffect(() => {
     if (!canvasRef.current) {
@@ -163,18 +164,20 @@ function App() {
       return;
     }
 
-    if (gameOver) {
+    if (!alive) {
       return;
     }
 
     const render = () => {
       const nextSnake = calcNextSnake(snake, fruit, delta);
-      setSnake(nextSnake);
 
       if (isDead(nextSnake)) {
         console.log("DEATH");
+        setAlive(false);
         return;
       }
+
+      setSnake(nextSnake);
 
       drawBoard(context);
       drawFruit(context, fruit);
@@ -189,18 +192,19 @@ function App() {
 
     const renderInterval = setInterval(render, 1000 / FPS);
     return () => clearInterval(renderInterval);
-  }, [delta, snake, fruit, gameOver]);
+  }, [delta, snake, fruit, alive]);
 
   return (
     <>
       <Navbar />
-      <div className="flex-fill d-flex justify-content-center align-items-center">
+      <div className="flex-fill d-flex flex-column justify-content-center align-items-center">
         <canvas
           className="canvas mw-100 mh-100"
           width={GRID_SIZE.w * TILE_SCALE}
           height={GRID_SIZE.h * TILE_SCALE}
           ref={canvasRef}
         />
+        <div className="m-3 fs-4 fw-bold">Score: {score}</div>
       </div>
     </>
   );
