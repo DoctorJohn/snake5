@@ -22,6 +22,44 @@ function useControls() {
     return () => window.removeEventListener("keydown", handleKeyboardEvent);
   }, [setLastKey]);
 
+  React.useEffect(() => {
+    if (!window.DeviceOrientationEvent) {
+      console.log("Device orientation events are not supported :(");
+      return;
+    }
+
+    const handleDeviceOrientationEvent = (event: DeviceOrientationEvent) => {
+      const leftToRight = event.gamma ?? 0;
+      const frontToBack = event.beta ?? 0;
+
+      if (Math.abs(leftToRight) > Math.abs(frontToBack)) {
+        if (leftToRight > 0) {
+          setLastKey("ArrowRight");
+        } else {
+          setLastKey("ArrowLeft");
+        }
+      } else {
+        if (frontToBack > 0) {
+          setLastKey("ArrowDown");
+        } else {
+          setLastKey("ArrowUp");
+        }
+      }
+    };
+
+    window.addEventListener(
+      "deviceorientation",
+      handleDeviceOrientationEvent,
+      true
+    );
+
+    return () =>
+      window.removeEventListener(
+        "deviceorientation",
+        handleDeviceOrientationEvent
+      );
+  }, [setLastKey]);
+
   const deltaX =
     lastKey === "ArrowLeft" ? -1 : lastKey === "ArrowRight" ? 1 : 0;
   const deltaY = lastKey === "ArrowUp" ? -1 : lastKey === "ArrowDown" ? 1 : 0;
