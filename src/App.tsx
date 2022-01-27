@@ -183,7 +183,7 @@ function App() {
   }, [delta, snake, fruit, gameOver]);
 
   return (
-    <div>
+    <div className="app">
       <canvas
         className="canvas"
         width={GRID_SIZE.w * TILE_SCALE}
