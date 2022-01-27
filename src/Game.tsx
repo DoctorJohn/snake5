@@ -13,6 +13,12 @@ const SNAKE_HEAD_COLOR = "green";
 const FRUIT_COLOR = "deeppink";
 const FPS = 2;
 
+const nom2 = new Audio("/audio/nom2.mp3");
+const ohoh = new Audio("/audio/ohoh.mp3");
+
+nom2.load();
+ohoh.load();
+
 function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
@@ -176,7 +182,7 @@ function Game() {
     drawSnake(context, nextSnake);
 
     if (isEating(nextSnake, fruit)) {
-      new Audio("/audio/nom2.mp3").play();
+      nom2.play();
       const nextFruit = randomPosition();
       setFruit(nextFruit);
     }
@@ -186,7 +192,7 @@ function Game() {
     if (!alive) {
       console.log("GAME OVER");
       navigator.vibrate(500);
-      new Audio("/audio/ohoh.mp3").play();
+      ohoh.play();
     }
   }, [alive]);
 
