@@ -1,6 +1,7 @@
 import React from "react";
 import useControls from "./useControls";
 import "./App.css";
+import Navbar from "./Navbar";
 
 type Point = { x: number; y: number };
 type Size = { w: number; h: number };
@@ -185,14 +186,17 @@ function App() {
   }, [delta, snake, fruit, gameOver]);
 
   return (
-    <div className="flex-fill d-flex justify-content-center align-items-center">
-      <canvas
-        className="canvas"
-        width={GRID_SIZE.w * TILE_SCALE}
-        height={GRID_SIZE.h * TILE_SCALE}
-        ref={canvasRef}
-      />
-    </div>
+    <>
+      <Navbar />
+      <div className="flex-fill d-flex justify-content-center align-items-center">
+        <canvas
+          className="canvas mw-100 mh-100"
+          width={GRID_SIZE.w * TILE_SCALE}
+          height={GRID_SIZE.h * TILE_SCALE}
+          ref={canvasRef}
+        />
+      </div>
+    </>
   );
 }
 
