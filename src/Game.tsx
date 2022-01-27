@@ -149,15 +149,7 @@ function Game() {
     setAlive(true);
   };
 
-  React.useEffect(() => {
-    if (!alive) {
-      console.log("GAME OVER");
-      navigator.vibrate(500);
-      new Audio("/audio/ohoh.mp3").play();
-    }
-  }, [alive]);
-
-  React.useEffect(() => {
+  const render = () => {
     if (!canvasRef.current) {
       return;
     }
@@ -169,35 +161,49 @@ function Game() {
       return;
     }
 
-    if (!alive) {
+    const nextSnake = calcNextSnake(snake, fruit, delta);
+
+    if (isDead(nextSnake)) {
+      console.log("DEATH");
+      setAlive(false);
       return;
     }
 
-    const render = () => {
-      const nextSnake = calcNextSnake(snake, fruit, delta);
+    setSnake(nextSnake);
 
-      if (isDead(nextSnake)) {
-        console.log("DEATH");
-        setAlive(false);
-        return;
-      }
+    drawBoard(context);
+    drawFruit(context, fruit);
+    drawSnake(context, nextSnake);
 
-      setSnake(nextSnake);
+    if (isEating(nextSnake, fruit)) {
+      new Audio("/audio/nom2.mp3").play();
+      const nextFruit = randomPosition();
+      setFruit(nextFruit);
+    }
+  };
 
-      drawBoard(context);
-      drawFruit(context, fruit);
-      drawSnake(context, nextSnake);
+  React.useEffect(() => {
+    if (!alive) {
+      console.log("GAME OVER");
+      navigator.vibrate(500);
+      new Audio("/audio/ohoh.mp3").play();
+    }
+  }, [alive]);
 
-      if (isEating(nextSnake, fruit)) {
-        new Audio("/audio/nom2.mp3").play();
-        const nextFruit = randomPosition();
-        setFruit(nextFruit);
-      }
-    };
-
-    const renderInterval = setInterval(render, 1000 / FPS);
-    return () => clearInterval(renderInterval);
+  React.useEffect(() => {
+    if (alive) {
+      // Game rendering loop
+      const renderInterval = setInterval(render, 1000 / FPS);
+      return () => clearInterval(renderInterval);
+    }
   }, [delta, snake, fruit, alive]);
+
+  React.useEffect(() => {
+    if (alive) {
+      // React to controls by rendering early
+      render();
+    }
+  }, [alive, delta]);
 
   return (
     <div className="flex-fill d-flex flex-column justify-content-center align-items-center">
