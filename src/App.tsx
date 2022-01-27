@@ -144,6 +144,14 @@ function App() {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
+    if (gameOver) {
+      console.log("GAME OVER");
+      navigator.vibrate(500);
+      new Audio("/audio/ohoh.mp3").play();
+    }
+  }, [gameOver]);
+
+  React.useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
@@ -156,8 +164,6 @@ function App() {
     }
 
     if (gameOver) {
-      console.log("GAME OVER");
-      new Audio("/audio/ohoh.mp3").play();
       return;
     }
 
