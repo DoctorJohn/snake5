@@ -34,7 +34,7 @@ function drawBoard(context: CanvasRenderingContext2D) {
 
 function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
   // Draw snake
-  for (let index = 0; index < snake.length; index++) {
+  for (let index = 1; index < snake.length; index++) {
     const snakePart = snake[index];
     const hue = mod(index * 10 + 100, 360);
     context.beginPath();
@@ -48,7 +48,7 @@ function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
     context.fill();
   }
 
-  // Draw head again
+  // Draw head
   const snakeHead = snake[0];
   context.beginPath();
   context.rect(
