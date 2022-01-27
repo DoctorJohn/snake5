@@ -144,6 +144,12 @@ function App() {
   const score = snake.length - 1;
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
+  const reset = () => {
+    setSnake([randomPosition()]);
+    setFruit(randomPosition());
+    setAlive(true);
+  };
+
   React.useEffect(() => {
     if (!alive) {
       console.log("GAME OVER");
@@ -198,12 +204,23 @@ function App() {
     <>
       <Navbar />
       <div className="flex-fill d-flex flex-column justify-content-center align-items-center">
-        <canvas
-          className="canvas mw-100 mh-100"
-          width={GRID_SIZE.w * TILE_SCALE}
-          height={GRID_SIZE.h * TILE_SCALE}
-          ref={canvasRef}
-        />
+        <div className="position-relative mw-100 mh-100 d-flex justify-content-center align-items-center">
+          <canvas
+            className="canvas mw-100 mh-100"
+            width={GRID_SIZE.w * TILE_SCALE}
+            height={GRID_SIZE.h * TILE_SCALE}
+            ref={canvasRef}
+          />
+          {!alive && (
+            <button
+              type="button"
+              className="btn btn-lg btn-primary shadow-lg position-absolute"
+              onClick={reset}
+            >
+              Snake again
+            </button>
+          )}
+        </div>
         <div className="m-3 fs-4 fw-bold">Score: {score}</div>
       </div>
     </>
