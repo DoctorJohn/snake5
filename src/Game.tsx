@@ -1,6 +1,7 @@
 import React from "react";
 import useControls from "./useControls";
 import "./Game.css";
+import { storeScore } from "./scores";
 
 type Point = { x: number; y: number };
 type Size = { w: number; h: number };
@@ -193,8 +194,9 @@ function Game() {
       console.log("GAME OVER");
       navigator.vibrate(500);
       ohoh.play();
+      storeScore(score);
     }
-  }, [alive]);
+  }, [alive, score]);
 
   React.useEffect(() => {
     if (alive) {
