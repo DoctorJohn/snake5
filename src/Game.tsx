@@ -156,39 +156,6 @@ function Game() {
     setAlive(true);
   };
 
-  const render = () => {
-    if (!canvasRef.current) {
-      return;
-    }
-
-    const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
-
-    if (!context) {
-      return;
-    }
-
-    const nextSnake = calcNextSnake(snake, fruit, delta);
-
-    if (isDead(nextSnake)) {
-      console.log("DEATH");
-      setAlive(false);
-      return;
-    }
-
-    setSnake(nextSnake);
-
-    drawBoard(context);
-    drawFruit(context, fruit);
-    drawSnake(context, nextSnake);
-
-    if (isEating(nextSnake, fruit)) {
-      nom2.play();
-      const nextFruit = randomPosition();
-      setFruit(nextFruit);
-    }
-  };
-
   React.useEffect(() => {
     if (!canvasRef.current) {
       return;
@@ -213,19 +180,46 @@ function Game() {
   }, [alive, score]);
 
   React.useEffect(() => {
-    if (alive) {
-      // Game rendering loop
-      const renderInterval = setInterval(render, 1000 / FPS);
-      return () => clearInterval(renderInterval);
+    if (!alive) {
+      return;
     }
-  }, [delta, snake, fruit, alive]);
 
-  React.useEffect(() => {
-    if (alive) {
-      // React to controls by rendering early
-      render();
-    }
-  }, [alive, delta]);
+    const render = () => {
+      if (!canvasRef.current) {
+        return;
+      }
+
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+
+      if (!context) {
+        return;
+      }
+
+      const nextSnake = calcNextSnake(snake, fruit, delta);
+
+      if (isDead(nextSnake)) {
+        console.log("DEATH");
+        setAlive(false);
+        return;
+      }
+
+      setSnake(nextSnake);
+
+      drawBoard(context);
+      drawFruit(context, fruit);
+      drawSnake(context, nextSnake);
+
+      if (isEating(nextSnake, fruit)) {
+        nom2.play();
+        const nextFruit = randomPosition();
+        setFruit(nextFruit);
+      }
+    };
+
+    const renderInterval = setInterval(render, 1000 / FPS);
+    return () => clearInterval(renderInterval);
+  }, [delta, snake, fruit, alive]);
 
   return (
     <div className="flex-fill d-flex flex-column justify-content-center align-items-center">
