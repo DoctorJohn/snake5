@@ -7,10 +7,10 @@ type Size = { w: number; h: number };
 
 const GRID_SIZE: Size = { w: 10, h: 10 }; // units
 const TILE_SCALE: number = 50; // pixels
-const TILE_VARIANT0_COLOR = "wheat";
-const TILE_VARIANT1_COLOR = "white";
+const TILE_VARIANT0_COLOR = "#fbf0dd";
+const TILE_VARIANT1_COLOR = "#fff9ee";
 const SNAKE_HEAD_COLOR = "green";
-const FRUIT_COLOR = "red";
+const FRUIT_COLOR = "deeppink";
 const FPS = 2;
 
 function mod(n: number, m: number) {
