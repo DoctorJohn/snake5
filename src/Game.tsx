@@ -144,7 +144,7 @@ function randomPosition() {
 function Game() {
   const [snake, setSnake] = React.useState([randomPosition()]);
   const [fruit, setFruit] = React.useState(randomPosition());
-  const [alive, setAlive] = React.useState(true);
+  const [alive, setAlive] = React.useState(false);
   const { delta } = useControls();
 
   const score = snake.length - 1;
@@ -190,7 +190,21 @@ function Game() {
   };
 
   React.useEffect(() => {
-    if (!alive) {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      return;
+    }
+    drawBoard(context);
+  }, []);
+
+  React.useEffect(() => {
+    if (!alive && score > 0) {
       console.log("GAME OVER");
       navigator.vibrate(500);
       ohoh.play();
@@ -228,7 +242,7 @@ function Game() {
             className="btn btn-lg btn-primary shadow-lg position-absolute"
             onClick={reset}
           >
-            Snake again
+            Play Snake
           </button>
         )}
       </div>
