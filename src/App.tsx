@@ -109,7 +109,6 @@ function calcNextSnake(oldSnake: Point[], fruit: Point, delta: Point) {
   const headless: Point[] = oldSnake.slice(1);
 
   if (isEating(headless, currentHead)) {
-    console.log("DEATH");
     return [];
   }
 
@@ -157,6 +156,7 @@ function App() {
 
     if (gameOver) {
       console.log("GAME OVER");
+      new Audio("/audio/ohoh.mp3").play();
       return;
     }
 
@@ -165,6 +165,7 @@ function App() {
       setSnake(nextSnake);
 
       if (isDead(nextSnake)) {
+        console.log("DEATH");
         return;
       }
 
@@ -173,6 +174,7 @@ function App() {
       drawSnake(context, nextSnake);
 
       if (isEating(nextSnake, fruit)) {
+        new Audio("/audio/nom2.mp3").play();
         const nextFruit = randomPosition();
         setFruit(nextFruit);
       }
