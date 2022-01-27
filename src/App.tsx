@@ -59,6 +59,28 @@ function drawSnake(context: CanvasRenderingContext2D, snake: Point[]) {
   );
   context.fillStyle = SNAKE_HEAD_COLOR;
   context.fill();
+
+  // Draw left eye
+  context.beginPath();
+  context.rect(
+    snakeHead.x * TILE_SCALE + 0.2 * TILE_SCALE,
+    snakeHead.y * TILE_SCALE + 0.2 * TILE_SCALE,
+    TILE_SCALE / 10,
+    TILE_SCALE / 10
+  );
+  context.fillStyle = "black";
+  context.fill();
+
+  // Draw right eye
+  context.beginPath();
+  context.rect(
+    snakeHead.x * TILE_SCALE + 0.7 * TILE_SCALE,
+    snakeHead.y * TILE_SCALE + 0.2 * TILE_SCALE,
+    TILE_SCALE / 10,
+    TILE_SCALE / 10
+  );
+  context.fillStyle = "black";
+  context.fill();
 }
 
 function drawFruit(context: CanvasRenderingContext2D, fruit: Point) {
