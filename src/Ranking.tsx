@@ -32,10 +32,11 @@ function Ranking() {
               const rank = index + 1;
               const datetime = new Date(score.datetime);
               const prettyDate = datetime.toLocaleDateString("de-DE", {
-                weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               });
 
               return (
